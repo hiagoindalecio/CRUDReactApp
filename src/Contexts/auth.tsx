@@ -1,10 +1,12 @@
-import React, {createContext, useEffect, useState } from 'react';
+import React, {ReactElement, createContext, useEffect, useState } from 'react';
 import { AuthContextData, User } from '../Interfaces';
-import * as auth from '../services/auth';
+import * as auth from '../Services/auth';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: {
+    children: ReactElement;
+}) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentScreen, setCurrentScreen] = useState<string>('Home');
