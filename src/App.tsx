@@ -3,7 +3,7 @@ import Routes from './Routes';
 import { AuthProvider } from './Contexts/auth';
 //import { PeopleProvider } from './contexts/people';
 
-import './App.css';
+//import './App.css';
 
 const App = () => {
   return (

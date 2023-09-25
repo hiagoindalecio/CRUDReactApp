@@ -36,20 +36,20 @@ const Rotate = styled.div`
 `;
 
 const Routes: React.FC = () => {
-    const { signed, loading: authLoading } = useContext(AuthContext);
-    //const { loading: peopleLoading } = useContext(PeopleContext);
+  const { signed, loading: authLoading } = useContext(AuthContext);
+  //const { loading: peopleLoading } = useContext(PeopleContext);
 
-    if (authLoading /*|| peopleLoading*/)
-        return (
-            <div>
-                <Rotate>
-                    {/*<img src={logo} alt="logo" className="img-logo"/>*/}
-                </Rotate>
-                <h3 style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
-            </div>
-        )
+  if (authLoading /*|| peopleLoading*/)
+    return (
+      <div>
+        <Rotate>
+          {/*<img src={logo} alt="logo" className="img-logo"/>*/}
+        </Rotate>
+        <h3 style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
+      </div>
+    );
 
-    return signed ? <DefaultRoutes /> : <SignedRoutes />; // Se o usuário estiver logado retorna SignedRoutes
+  return signed ? <SignedRoutes /> : <DefaultRoutes />; // Se o usuário estiver logado retorna SignedRoutes
 };
 
 export default Routes;

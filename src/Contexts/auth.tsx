@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: {
 
             if(response === 'O usuário foi modificado com sucesso') {
                 var newUser = {
-                    id: user?.id, 
+                    id: user ? user.id : 0, 
                     login: login
                 }
 
