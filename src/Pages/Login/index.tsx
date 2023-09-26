@@ -20,9 +20,18 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   let navigate = useNavigate();
 
-  async function handleSubmit() {
-    //event.preventDefault();
-    //console.log(event.target.InputName);
+  function getFormControl(form: HTMLFormElement, name: string): HTMLInputElement {
+    const control = form.elements.namedItem(name) as HTMLInputElement;
+    if (!control || control instanceof RadioNodeList || !("value" in control))
+        throw new Error(`Form control "${name}" not found or was a RadioNodeList`);
+
+    return control;
+  } 
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    var emailField = getFormControl(event.currentTarget, 'InputEmail1');
+    
     /*if($("input[type=email][name=email]").val() as string !== '' && $("input[type=password][name=password]").val() as string !== '') {
       if(action === 'Entrar') {
         var done = await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
@@ -94,7 +103,7 @@ const Login: React.FC = () => {
             <img src={logo} alt="logo" className="img-logo"/>
           </div>
         </header>
-        <Form className='form-login' onSubmit={() => handleSubmit()}>
+        <Form className='form-login' onSubmit={(event: React.FormEvent<HTMLFormElement>) => handleSubmit(event)}>
           { nameUser }
           <Form.Group className="mb-3" controlId="InputEmail1">
             <Form.Label>Endereço de e-mail</Form.Label>
