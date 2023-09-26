@@ -1,13 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import './styles.css';
-//import $ from "jquery";
 
 import AuthContext from '../../Contexts/auth';
 
 import ModalMessage from '../../Components/ModalMessages';
-import Dropzone from '../../Components/Dropzone';
-import { Icon, iconType } from '@sensenet/icons-react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 import logo from '../../Assets/logo.png';
 
@@ -19,10 +18,11 @@ const Login: React.FC = () => {
   const [action, setAction] = useState<String>('Entrar');
   const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
   const [message, setMessage] = useState<string>('');
-  const [selectedFile, setSelectedfile] = useState<File>();
   let navigate = useNavigate();
 
   async function handleSubmit() {
+    //event.preventDefault();
+    //console.log(event.target.InputName);
     /*if($("input[type=email][name=email]").val() as string !== '' && $("input[type=password][name=password]").val() as string !== '') {
       if(action === 'Entrar') {
         var done = await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
@@ -52,13 +52,10 @@ const Login: React.FC = () => {
     }*/
   }
 
-  function back() {
-    navigate("/");
-  }
-
   function handleChange(actionText: String) {
     if(actionText === 'option1') {
       setAction('Entrar');
+
       setSecondEmail(<div />);
       setSecondPassword(<div />);
       setNameUser(<div />);
@@ -66,27 +63,23 @@ const Login: React.FC = () => {
       setAction('Criar conta');
 
       setSecondEmail(
-        <div className="form-group">
-          <label htmlFor="InputEmail2">Confime seu e-mail:</label>
-          <input type="email" name="email2" className="form-control" id="InputEmail2" aria-describedby="emailHelp" />
-        </div>
+        <Form.Group className="mb-3" controlId="InputEmail2">
+          <Form.Label>Confime seu e-mail</Form.Label>
+          <Form.Control type="email" placeholder="Confime seu e-mail" aria-describedby="emailHelp" />
+          <Form.Text className="text-muted">Nós nunca iremos compartilhar seu e-mail com ninguém.</Form.Text>
+        </Form.Group>
       );
-
       setSecondPassword(
-        <div className="form-group">
-          <label htmlFor="InputPassword2">Confime sua senha:</label>
-          <input type="password" name="password2" className="form-control" id="InputPassword2" />
-        </div>
+        <Form.Group className="mb-3" controlId="InputPassword2">
+          <Form.Label>Confime sua senha</Form.Label>
+          <Form.Control type="password" placeholder="Confime sua senha" />
+        </Form.Group>
       );
-
       setNameUser(
-        <div className="form-group">
-          <label htmlFor="">Foto de perfil:</label>
-          <Dropzone onFileUploaded={setSelectedfile} />
-          <br/>
-          <label htmlFor="InputName">Informe seu nome:</label>
-          <input type="text" name="nameUser" className="form-control" id="InputName" />
-        </div>
+        <Form.Group className="mb-3" controlId="InputName">
+          <Form.Label>Nome</Form.Label>
+          <Form.Control type="text" placeholder="Informe seu nome"/>
+        </Form.Group>
       );
     }
   }
@@ -94,46 +87,45 @@ const Login: React.FC = () => {
   return(
     <fieldset>
       <div id="login-page">
-        <div className="content">
         { isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null }
-          <header className="header">
-            <div className="header-logo">
-              <h1 className="header-text">Brain</h1>
-              <img src={logo} alt="logo" className="img-logo"/>
-            </div>
-          </header>
-          <Icon
-            iconName='arrow_back'
-            fontSize="default"
-            className="back-button"
-            type={iconType.materialui}
-            onClick={back}/>
-          <form className="form-login">
-            {
-              nameUser
-            }
-            <div className="form-group">
-              <label htmlFor="InputEmail1">Endereço de e-mail</label>
-              <input type="email" name="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" />
-              <small id="emailHelp" className="form-text text-muted">Nós nunca iremos compartilhar seu e-mail com ninguém.</small>
-            </div>
-            {
-              secondEmail
-            }
-            <div className="form-group">
-              <label htmlFor="InputPassword1">Senha</label>
-              <input type="password" name="password" className="form-control" id="InputPassword1" />
-            </div>
-            {
-              secondPassword
-            }
-            <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>{action}</button>
-            <nav className="navbar-light bg-light">
-              <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option1')}>Tenho um conta</button>
-              <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option2')}>Não tenho uma conta</button>
-            </nav>
-          </form>
-        </div>
+        <header className="header">
+          <div className="header-logo">
+            <h1 className="header-text">People Management</h1>
+            <img src={logo} alt="logo" className="img-logo"/>
+          </div>
+        </header>
+        <Form className='form-login' onSubmit={() => handleSubmit()}>
+          { nameUser }
+          <Form.Group className="mb-3" controlId="InputEmail1">
+            <Form.Label>Endereço de e-mail</Form.Label>
+            <Form.Control type="email" placeholder="Insira o e-mail" aria-describedby="emailHelp" />
+            <Form.Text className="text-muted">Nós nunca iremos compartilhar seu e-mail com ninguém.</Form.Text>
+          </Form.Group>
+          { secondEmail }
+          <Form.Group className="mb-3" controlId="InputPassword1">
+            <Form.Label>Senha</Form.Label>
+            <Form.Control type="password" placeholder="Insira a senha" />
+          </Form.Group>
+          { secondPassword }
+          <Button variant="primary" type="submit">
+            { action }
+          </Button>
+          <Form.Check
+            inline
+            label='Tenho um conta'
+            name='group1'
+            type='radio'
+            defaultChecked={true}
+            onChange={() => handleChange('option1')}
+          />
+          <Form.Check
+            inline
+            label='Não tenho uma conta'
+            name='group1'
+            type='radio'
+            onChange={() => handleChange('option2')}
+          />
+        </Form>
       </div>
     </fieldset>
   );

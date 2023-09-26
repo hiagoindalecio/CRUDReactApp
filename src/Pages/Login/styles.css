@@ -1,19 +1,19 @@
-#login-page .content header {
+#login-page header {
   margin: 1em;
+}
+
+#login-page {
+  width: 100%;
 }
 
 nav {
   padding: 10px;
 }
 
-#login-page .content {
-  width: 100%;
-}
-
 .header-logo {
   display: grid;
   align-items: center;
-  grid-template-columns: 10vh 13vh;
+  grid-template-columns: 13vh 13vh;
   grid-template-areas: 
   "gimg-logo gheader-text";
 }
@@ -31,8 +31,8 @@ nav {
   flex-direction: column;
 }
 
-.header {
-  grid-area: gheader;
+.header-text {
+  grid-area: gheader-text;
 }
 
 .img-logo {
