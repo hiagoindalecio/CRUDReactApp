@@ -2,7 +2,9 @@ import { ReactElement } from "react";
 
 export interface User {
   id: number;
-  login: string;
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface AuthContextData {
@@ -10,9 +12,9 @@ export interface AuthContextData {
   user: User | null;
   loading: boolean;
   currentScreen: string;
-  singIn(email: string, password: string): Promise<string>;
-  createUser(email: string, password: string, name: string, image: File): Promise<string>;
-  updateUser(id: number, name: string | null, password: string | null, image: File | null): Promise<string>;
+  singIn(email: string, password: string): Promise<boolean>;
+  createUser(email: string, password: string, name: string): Promise<string>;
+  updateUser(id: number, login: string | null, password: string | null, name: string | null): Promise<string>;
   singOut(email: string, password: string): Promise<string>;
   selectScreen(eleme: string): void;
 }

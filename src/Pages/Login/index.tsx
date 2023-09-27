@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from "react-router-dom";
 import './styles.css';
 
 import AuthContext from '../../Contexts/auth';
@@ -18,7 +17,6 @@ const Login: React.FC = () => {
   const [action, setAction] = useState<String>('Entrar');
   const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
   const [message, setMessage] = useState<string>('');
-  let navigate = useNavigate();
 
   function getFormControl(form: HTMLFormElement, name: string): HTMLInputElement {
     const control = form.elements.namedItem(name) as HTMLInputElement;
@@ -30,35 +28,50 @@ const Login: React.FC = () => {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    var emailField = getFormControl(event.currentTarget, 'InputEmail1');
     
-    /*if($("input[type=email][name=email]").val() as string !== '' && $("input[type=password][name=password]").val() as string !== '') {
-      if(action === 'Entrar') {
-        var done = await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
-        if(done !== 'Sucesso!') {
-          alert(done.toString());
-          //setIsModalMessageVisible(true);
-        }
-      } else if (action === 'Criar conta') {
-        if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
-          const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string), selectedFile as File);
-          alert(reply.toString());
-          //setIsModalMessageVisible(true);
-        } else if (($("input[type=email][name=email]").val() as string) !== ($("input[type=email][name=email2]").val() as string)) {
-          setMessage('Os dois endereços de e-mail devem ser indênticos!');
-          setIsModalMessageVisible(true);
-        } else if (($("input[type=password][name=password]").val() as string) !== ($("input[type=password][name=password2]").val() as string)) {
-          setMessage('Os dois campos de senha devem ser idênticos!');
-          setIsModalMessageVisible(true);
-        } else if (($("input[type=text][name=nameUser]").val() as string) === '') {
-          setMessage('Você deve preencher o campo de nome!');
-          setIsModalMessageVisible(true);
-        }
+    var emailField = getFormControl(event.currentTarget, 'InputEmail1');
+    var passwordField = getFormControl(event.currentTarget, 'InputPassword1');
+    
+    if (action === 'Entrar') {
+      if (emailField.value !== '' 
+        && passwordField.value !== '') {
+          if (await singIn(emailField.value, passwordField.value))
+            alert('Sucesso!');  
+          else {
+            setMessage('E-mail ou senha digitados incorretamente.');
+            setIsModalMessageVisible(true);
+          }
+      } else {
+        setMessage('Os campos e-mail e senha devem estar preenchidos!');
+        setIsModalMessageVisible(true);
       }
-    } else {
-      setMessage('Os campos e-mail e senha devem estar preenchidos!');
-      setIsModalMessageVisible(true);
-    }*/
+    } else if (action === 'Criar conta') {
+      var emailConfirmationField = getFormControl(event.currentTarget, 'InputEmail2');
+      var passwordConfirmationField = getFormControl(event.currentTarget, 'InputPassword2');
+      var nameField = getFormControl(event.currentTarget, 'InputName');
+
+      if (emailField.value === '' || emailConfirmationField.value == '') {
+        setMessage('Os dois campos de e-mail devem estar preenchidos!');
+        setIsModalMessageVisible(true);
+      } else if (nameField.value === '') {
+        setMessage('O campo de nome deve estar preenchido!');
+        setIsModalMessageVisible(true);
+      } else if (passwordField.value === '' || passwordConfirmationField.value == '') {
+        setMessage('Os dois campos de senha devem estar preenchidos!');
+        setIsModalMessageVisible(true);
+      } else if (emailField.value !== emailConfirmationField.value) {
+        setMessage('Os dois endereços de e-mail devem ser indênticos!');
+        setIsModalMessageVisible(true);
+      } else if (passwordField.value !== passwordConfirmationField.value) {
+        setMessage('Os dois campos de senha devem ser idênticos!');
+        setIsModalMessageVisible(true);
+      } else if (emailField.value === emailConfirmationField.value
+        && passwordField.value === passwordConfirmationField.value 
+        && nameField.value !== '') {
+        const reply = await createUser(emailField.value, passwordField.value, nameField.value);
+        alert(reply);
+      }
+    }
   }
 
   function handleChange(actionText: String) {
@@ -103,7 +116,7 @@ const Login: React.FC = () => {
             <img src={logo} alt="logo" className="img-logo"/>
           </div>
         </header>
-        <Form className='form-login' onSubmit={(event: React.FormEvent<HTMLFormElement>) => handleSubmit(event)}>
+        <Form className='form-login' onSubmit={handleSubmit}>
           { nameUser }
           <Form.Group className="mb-3" controlId="InputEmail1">
             <Form.Label>Endereço de e-mail</Form.Label>

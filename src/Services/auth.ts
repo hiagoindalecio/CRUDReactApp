@@ -1,14 +1,19 @@
+import { User } from '../Interfaces';
 import api from './api';
 
-export async function singIn(email: string, password: string): Promise<string> {
+export async function singIn(email: string, password: string): Promise<User | undefined> {
     return new Promise((resolve) => {
-        api.get<string>(`/uservalidate/${email}/${password}`).then(response => {
-            resolve(response.data as string); 
+        api.get<string>(`/users?email=${email}&password=${password}`).then(response => {
+            var usuario = response.data as unknown as Array<User>;
+            if (usuario.length == 0) // Empty result
+                resolve(undefined);
+            else
+                resolve(usuario[0]);
         });
     });
 }
 
-export async function createUser(login: string, password: string): Promise<string> {
+export async function createUser(login: string, password: string, name: string): Promise<string> {
     var data = new FormData();
     data.append('login', login);
     data.append('password', password);
@@ -20,7 +25,7 @@ export async function createUser(login: string, password: string): Promise<strin
     });
 }
 
-export async function updateUser(id: number, login: string, password: string): Promise<string> {
+export async function updateUser(id: number, login: string, password: string, name: string): Promise<string> {
     var data = new FormData();
     data.append('id', id as unknown as string);
     data.append('login', login);
