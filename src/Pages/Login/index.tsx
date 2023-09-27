@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import './styles.css';
 
+import logo from '../../Assets/logo.png';
+
 import AuthContext from '../../Contexts/auth';
 
 import ModalMessage from '../../Components/ModalMessages';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-import logo from '../../Assets/logo.png';
 
 const Login: React.FC = () => {
   const { singIn, createUser } = useContext(AuthContext);
@@ -35,9 +36,7 @@ const Login: React.FC = () => {
     if (action === 'Entrar') {
       if (emailField.value !== '' 
         && passwordField.value !== '') {
-          if (await singIn(emailField.value, passwordField.value))
-            alert('Sucesso!');  
-          else {
+          if (!await singIn(emailField.value, passwordField.value)) {
             setMessage('E-mail ou senha digitados incorretamente.');
             setIsModalMessageVisible(true);
           }
@@ -108,7 +107,7 @@ const Login: React.FC = () => {
 
   return(
     <fieldset>
-      <div id="login-page">
+      <div className='page'>
         { isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null }
         <header className="header">
           <div className="header-logo">

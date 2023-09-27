@@ -15,7 +15,7 @@ export interface AuthContextData {
   singIn(email: string, password: string): Promise<boolean>;
   createUser(email: string, password: string, name: string): Promise<string>;
   updateUser(id: number, login: string | null, password: string | null, name: string | null): Promise<string>;
-  singOut(email: string, password: string): Promise<string>;
+  singOut(): Promise<boolean>;
   selectScreen(eleme: string): void;
 }
 
@@ -25,8 +25,4 @@ export interface ModalMessagesProps {
   };
   onClose: () => void;
   children?: ReactElement;
-}
-
-export interface DropzoneProps {
-  onFileUploaded: (file: File) => void;
 }

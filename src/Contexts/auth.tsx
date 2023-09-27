@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }: {
   const [currentScreen, setCurrentScreen] = useState<string>('Home');
 
   useEffect(() => {
-    async function loadStorageData() {
+    if (!user) {
       setLoading(true);
       const storagedUser = localStorage.getItem('@RNAuth:user');
       if (storagedUser)
@@ -24,10 +24,6 @@ export const AuthProvider = ({ children }: {
 
       setLoading(false);
     }
-    
-    if (!user) {
-      loadStorageData();
-    }
   }, [user]);
 
   async function singIn(login: string, password: string): Promise<boolean> {
@@ -36,7 +32,7 @@ export const AuthProvider = ({ children }: {
       const response = await auth.singIn(login, password);
       if (response !== undefined) {
         setUser(response);
-        localStorage.setItem('@RNAuth:user', JSON.stringify(user));
+        localStorage.setItem('@RNAuth:user', JSON.stringify(response));
         //setLoading(false);
         resolve(true);
       } else {
@@ -77,8 +73,6 @@ export const AuthProvider = ({ children }: {
         }
 
         setUser(newUser);
-
-        localStorage.clear();
         localStorage.setItem('@RNAuth:user', JSON.stringify(newUser));
       }
       setLoading(false);
@@ -86,14 +80,14 @@ export const AuthProvider = ({ children }: {
     });
   }
 
-  function singOut(): Promise<string> {
+  function singOut(): Promise<boolean> {
     return new Promise(async (resolve) => {
       setLoading(true);
       localStorage.clear();
       setUser(null);
       setCurrentScreen('Home');
       setLoading(false);
-      resolve('Sucesso!');
+      resolve(true);
     });
   }
 
