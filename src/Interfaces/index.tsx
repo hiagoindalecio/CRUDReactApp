@@ -7,6 +7,13 @@ export interface User {
   password: string;
 }
 
+export interface Person {
+  id: number;
+  idCreator: number;
+  name: string;
+  age: number;
+}
+
 export interface AuthContextData {
   signed: boolean;
   user: User | null;

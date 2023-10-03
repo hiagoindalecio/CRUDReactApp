@@ -1,5 +1,6 @@
 :root {
   --primary-color: #7EC8E3;
+  --secondary-color: #00729c;
   --title-color: #050A30;
   --text-color: #000C66;
 }
@@ -35,6 +36,10 @@ header {
 
 .page {
   width: 100%;
+}
+
+.content {
+  margin: 1em 1em 0 1em;
 }
 
 .header-logo {

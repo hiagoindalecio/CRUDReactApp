@@ -4,15 +4,33 @@
       "id": 1,
       "name": "admin",
       "email": "admin@admin.com",
-      "password": "123"
+      "password": "qwe123"
     }
   ],
   "people": [
     {
       "id": 1,
-      "idCreator": 1,
-      "name": "Pedro",
-      "age": 18
+      "creatorId": 1,
+      "name": "Adam",
+      "age": 23
+    },
+    {
+      "id": 2,
+      "creatorId": 1,
+      "name": "Melman",
+      "age": 34
+    },
+    {
+      "id": 3,
+      "creatorId": 1,
+      "name": "Alex",
+      "age": 52
+    },
+    {
+      "id": 4,
+      "creatorId": 1,
+      "name": "Gloria",
+      "age": 35
     }
   ]
 }
