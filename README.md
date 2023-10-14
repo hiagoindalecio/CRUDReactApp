@@ -6,6 +6,6 @@ Ao baixar o projeto favor abrir dois CMDs no diretório raiz da aplicação e ex
 </br>
 Inicializará o servidor da "fake API".
 </br>
-3. yarn start
+2. yarn start
 </br>
 Inicializará a aplicação.
