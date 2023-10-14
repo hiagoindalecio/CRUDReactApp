@@ -13,27 +13,26 @@ export async function singIn(email: string, password: string): Promise<User | un
   });
 }
 
-export async function createUser(login: string, password: string, name: string): Promise<string> {
-  var data = new FormData();
-  data.append('login', login);
-  data.append('password', password);
-
+export async function createUser(email: string, password: string, name: string): Promise<boolean> {
   return new Promise((resolve) => {
-    api.post<string>('/users', data).then(response => {
-      resolve(response.data as string);
+    api.post<string>('/users', {
+      email,
+      password,
+      name
+    }).then(response => {
+      resolve(response.status === 200);
     });
   });
 }
 
-export async function updateUser(id: number, login: string, password: string, name: string): Promise<string> {
-  var data = new FormData();
-  data.append('id', id as unknown as string);
-  data.append('login', login);
-  data.append('password', password);
-
+export async function updateUser(id: number, email: string, password: string, name: string): Promise<boolean> {
   return new Promise((resolve) => {
-    api.put<string>('/users/update', data).then(response => {
-      resolve(response.data as string);
+    api.put<string>(`/users/${id}`, {
+      email,
+      password,
+      name
+    }).then(response => {
+      resolve(response.status === 200);
     });
   });
 }

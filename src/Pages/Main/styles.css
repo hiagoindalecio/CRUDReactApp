@@ -56,3 +56,15 @@
 .btn-exit {
   background: var(--secondary-color);
 }
+
+.user-name {
+  cursor: default;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.8) ;
+  padding-left: 0.5rem;
+  color: rgb(245, 245, 245);
+}
+
+.user-name:hover {
+  opacity: 1;
+}

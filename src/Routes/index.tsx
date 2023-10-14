@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 
 import AuthContext from '../Contexts/auth';
-//import PeopleContext from '../contexts/people';
 
 import styled, { keyframes } from 'styled-components'
 
-//import logo from '../../src/assets/logo.png';
+import logo from '../Assets/logo.png';
 
 import SignedRoutes from './signed.routes';
 import DefaultRoutes from './default.routes';
@@ -37,19 +36,18 @@ const Rotate = styled.div`
 
 const Routes: React.FC = () => {
   const { signed, loading: authLoading } = useContext(AuthContext);
-  //const { loading: peopleLoading } = useContext(PeopleContext);
 
-  if (authLoading /*|| peopleLoading*/)
+  if (authLoading)
     return (
       <div>
         <Rotate>
-          {/*<img src={logo} alt="logo" className="img-logo"/>*/}
+          {<img src={logo} alt="logo" className="img-logo-loading"/>}
         </Rotate>
         <h3 style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
       </div>
     );
 
-  return signed ? <SignedRoutes /> : <DefaultRoutes />; // Se o usuário estiver logado retorna SignedRoutes
+  return signed ? <SignedRoutes /> : <DefaultRoutes />;
 };
 
 export default Routes;

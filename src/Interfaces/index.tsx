@@ -18,18 +18,19 @@ export interface AuthContextData {
   signed: boolean;
   user: User | null;
   loading: boolean;
-  currentScreen: string;
   singIn(email: string, password: string): Promise<boolean>;
-  createUser(email: string, password: string, name: string): Promise<string>;
-  updateUser(id: number, login: string | null, password: string | null, name: string | null): Promise<string>;
+  createUser(email: string, password: string, name: string): Promise<boolean>;
+  updateUser(id: number, email: string, password: string, name: string): Promise<boolean>;
   singOut(): Promise<boolean>;
-  selectScreen(eleme: string): void;
 }
 
-export interface ModalMessagesProps {
-  props : {
-    message: string;
-  };
-  onClose: () => void;
+export interface PersonalizedModalsProps {
+  message?: string;
+  title?: string;
+  hasConfirmButton?: boolean;
+  confirmButtonType?: 'submit' | 'reset' | 'button' | undefined;
+  confirmButtonForm?: string | undefined;
+  onConfirm?: () => void;
+  onClose?: () => void;
   children?: ReactElement;
 }

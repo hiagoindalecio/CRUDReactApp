@@ -13,9 +13,9 @@ export async function findPeople(idCreator: number): Promise<Person[] | undefine
   });
 }
 
-export async function createPerson(login: string, password: string, name: string): Promise<string> {
+export async function createPerson(email: string, password: string, name: string): Promise<string> {
   var data = new FormData();
-  data.append('...', login);
+  data.append('...', email);
 
   return new Promise((resolve) => {
     api.post<string>('/people', data).then(response => {
@@ -24,10 +24,10 @@ export async function createPerson(login: string, password: string, name: string
   });
 }
 
-export async function updatePerson(id: number, login: string, password: string, name: string): Promise<string> {
+export async function updatePerson(id: number, email: string, password: string, name: string): Promise<string> {
   var data = new FormData();
   data.append('id', id as unknown as string);
-  data.append('login', login);
+  data.append('login', email);
   data.append('password', password);
 
   return new Promise((resolve) => {

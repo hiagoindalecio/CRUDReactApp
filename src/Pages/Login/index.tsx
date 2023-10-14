@@ -5,7 +5,7 @@ import logo from '../../Assets/logo.png';
 
 import AuthContext from '../../Contexts/auth';
 
-import ModalMessage from '../../Components/ModalMessages';
+import PersonalizedModal from '../../Components/PersonalizedModal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -16,7 +16,7 @@ const Login: React.FC = () => {
   const [secondPassword, setSecondPassword] = useState<JSX.Element>();
   const [nameUser, setNameUser] = useState<JSX.Element>();
   const [action, setAction] = useState<String>('Entrar');
-  const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+  const [isPersonalizedModalVisible, setIsPersonalizedModalVisible] = useState(false);
   const [message, setMessage] = useState<string>('');
 
   function getFormControl(form: HTMLFormElement, name: string): HTMLInputElement {
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         throw new Error(`Form control "${name}" not found or was a RadioNodeList`);
 
     return control;
-  } 
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,11 +38,11 @@ const Login: React.FC = () => {
         && passwordField.value !== '') {
           if (!await singIn(emailField.value, passwordField.value)) {
             setMessage('E-mail ou senha digitados incorretamente.');
-            setIsModalMessageVisible(true);
+            setIsPersonalizedModalVisible(true);
           }
       } else {
-        setMessage('Os campos e-mail e senha devem estar preenchidos!');
-        setIsModalMessageVisible(true);
+        setMessage('Os campos de e-mail e senha devem estar preenchidos!');
+        setIsPersonalizedModalVisible(true);
       }
     } else if (action === 'Criar conta') {
       var emailConfirmationField = getFormControl(event.currentTarget, 'InputEmail2');
@@ -51,19 +51,19 @@ const Login: React.FC = () => {
 
       if (emailField.value === '' || emailConfirmationField.value == '') {
         setMessage('Os dois campos de e-mail devem estar preenchidos!');
-        setIsModalMessageVisible(true);
+        setIsPersonalizedModalVisible(true);
       } else if (nameField.value === '') {
         setMessage('O campo de nome deve estar preenchido!');
-        setIsModalMessageVisible(true);
+        setIsPersonalizedModalVisible(true);
       } else if (passwordField.value === '' || passwordConfirmationField.value == '') {
         setMessage('Os dois campos de senha devem estar preenchidos!');
-        setIsModalMessageVisible(true);
+        setIsPersonalizedModalVisible(true);
       } else if (emailField.value !== emailConfirmationField.value) {
         setMessage('Os dois endereços de e-mail devem ser indênticos!');
-        setIsModalMessageVisible(true);
+        setIsPersonalizedModalVisible(true);
       } else if (passwordField.value !== passwordConfirmationField.value) {
         setMessage('Os dois campos de senha devem ser idênticos!');
-        setIsModalMessageVisible(true);
+        setIsPersonalizedModalVisible(true);
       } else if (emailField.value === emailConfirmationField.value
         && passwordField.value === passwordConfirmationField.value 
         && nameField.value !== '') {
@@ -108,14 +108,14 @@ const Login: React.FC = () => {
   return(
     <fieldset>
       <div className='page'>
-        { isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null }
+        { isPersonalizedModalVisible ? <PersonalizedModal message={message} onClose={() => setIsPersonalizedModalVisible(false)} /> : null }
         <header className="header">
           <div className="header-logo">
             <h1 className="header-text">People Management</h1>
             <img src={logo} alt="logo" className="img-logo"/>
           </div>
         </header>
-        <Form className='form-login' onSubmit={handleSubmit}>
+        <Form className='form' onSubmit={handleSubmit}>
           { nameUser }
           <Form.Group className="mb-3" controlId="InputEmail1">
             <Form.Label>Endereço de e-mail</Form.Label>

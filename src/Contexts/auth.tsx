@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }: {
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentScreen, setCurrentScreen] = useState<string>('Home');
 
   useEffect(() => {
     if (!user) {
@@ -18,58 +17,54 @@ export const AuthProvider = ({ children }: {
       if (storagedUser)
         setUser(JSON.parse(storagedUser));
 
-      const current = localStorage.getItem('@RNAuth:currentScreen');
-      if (current)
-        setCurrentScreen(current);
-
       setLoading(false);
     }
   }, [user]);
 
-  async function singIn(login: string, password: string): Promise<boolean> {
+  async function singIn(email: string, password: string): Promise<boolean> {
     return new Promise(async (resolve) => {
-      //setLoading(true);
-      const response = await auth.singIn(login, password);
+      setLoading(true);
+      const response = await auth.singIn(email, password);
       if (response !== undefined) {
         setUser(response);
         localStorage.setItem('@RNAuth:user', JSON.stringify(response));
-        //setLoading(false);
         resolve(true);
       } else {
-        //setLoading(false);
         resolve(false);
       }
-    });
-  }
-
-  async function createUser(login: string, password: string, name: string): Promise<string> {
-    return new Promise(async (resolve) => {
-      setLoading(true);
-      const response = await auth.createUser(login, password, name);
-      resolve(response);
       setLoading(false);
     });
   }
 
-  async function updateUser(id: number, login: string | null, password: string | null, name: string | null): Promise<string> {
+  async function createUser(email: string, password: string, name: string): Promise<boolean> {
     return new Promise(async (resolve) => {
-      login = login == null ? (user as User).email : login;
-      password = password == null ? (user as User).password : password;
-      name = name == null ? (user as User).name : name;
+      setLoading(true);
+      email = email ? email : (user as User).email;
+      password = password ? password : (user as User).password;
+      name = name ? name : (user as User).name;
 
+      const response = await auth.createUser(email, password, name);
+      
+      setLoading(false);
+      resolve(response);      
+    });
+  }
+
+  async function updateUser(id: number, email: string, password: string, name: string): Promise<boolean> {
+    return new Promise(async (resolve) => {
       setLoading(true);
       const response = await auth.updateUser(
         id,
-        login,
+        email,
         password,
         name);
 
-      if (response === 'O usuário foi modificado com sucesso') {
+      if (response) {
         var newUser = {
           id: user ? user.id : 0, 
-          email: login,
-          name: name,
-          password: password
+          email,
+          name,
+          password
         }
 
         setUser(newUser);
@@ -85,21 +80,13 @@ export const AuthProvider = ({ children }: {
       setLoading(true);
       localStorage.clear();
       setUser(null);
-      setCurrentScreen('Home');
       setLoading(false);
       resolve(true);
     });
   }
 
-  function selectScreen(eleme: string) {
-    setLoading(true);
-    setCurrentScreen(eleme);
-    localStorage.setItem('@RNAuth:currentScreen', eleme);
-    setLoading(false);
-  }
-
   return (
-    <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, updateUser, singOut, selectScreen}}>
+    <AuthContext.Provider value={{signed: !!user, user, loading, singIn, createUser, updateUser, singOut}}>
       {children}
     </AuthContext.Provider>
   );
